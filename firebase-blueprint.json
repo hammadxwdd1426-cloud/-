@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "RestaurantProfile": {
+      "title": "RestaurantProfile",
+      "description": "Core restaurant information, contact, and settings",
+      "type": "object",
+      "properties": {
+        "nameArabic": { "type": "string", "description": "Bakery name in Arabic" },
+        "nameLatin": { "type": "string", "description": "Bakery name in Latin" },
+        "description": { "type": "string", "description": "Bakery description" },
+        "logoUrl": { "type": "string", "description": "Logo URL" },
+        "heroImageUrl": { "type": "string", "description": "Hero banner image URL" },
+        "isOpen": { "type": "boolean", "description": "Whether store is open for orders" },
+        "openingHoursText": { "type": "string", "description": "Opening hours summary" },
+        "restaurantWhatsapp": { "type": "string", "description": "Pickup orders WhatsApp phone" },
+        "courierWhatsapp": { "type": "string", "description": "Delivery orders courier WhatsApp phone" },
+        "deliveryFee": { "type": "number", "description": "Delivery fee in SAR" },
+        "branchName": { "type": "string", "description": "Branch name" },
+        "branchAddress": { "type": "string", "description": "Branch physical address" },
+        "branchPhone": { "type": "string", "description": "Branch contact phone" },
+        "branchMapUrl": { "type": "string", "description": "Branch map embed or link URL" }
+      },
+      "required": ["nameArabic", "nameLatin", "restaurantWhatsapp", "courierWhatsapp", "deliveryFee"]
+    },
+    "MenuCategory": {
+      "title": "MenuCategory",
+      "description": "Bakery menu category",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Category name in Arabic" },
+        "order": { "type": "number", "description": "Sort order" },
+        "isActive": { "type": "boolean", "description": "Whether category is active" }
+      },
+      "required": ["name", "order", "isActive"]
+    },
+    "MenuItem": {
+      "title": "MenuItem",
+      "description": "Bakery menu item",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Item name in Arabic" },
+        "description": { "type": "string", "description": "Item description" },
+        "price": { "type": "number", "description": "Price in SAR" },
+        "categoryId": { "type": "string", "description": "Associated category ID" },
+        "imageUrl": { "type": "string", "description": "Image URL of the baked item" },
+        "prepTimeMinutes": { "type": "number", "description": "Preparation time in minutes" },
+        "isAvailable": { "type": "boolean", "description": "Availability toggle" },
+        "order": { "type": "number", "description": "Sort order" }
+      },
+      "required": ["name", "price", "categoryId", "isAvailable"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order record",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "description": "Human readable sequential/unique order number" },
+        "customerName": { "type": "string", "description": "Customer name" },
+        "customerPhone": { "type": "string", "description": "Customer phone number" },
+        "fulfillmentType": { "type": "string", "enum": ["pickup", "delivery"], "description": "Fulfillment type" },
+        "deliveryAddress": { "type": "string", "description": "Delivery address if delivery" },
+        "pickupBranchInfo": { "type": "string", "description": "Pickup branch details" },
+        "items": { "type": "string", "description": "JSON string or summary of items" },
+        "subtotal": { "type": "number", "description": "Subtotal in SAR" },
+        "deliveryFee": { "type": "number", "description": "Delivery fee in SAR" },
+        "total": { "type": "number", "description": "Grand total in SAR" },
+        "status": { "type": "string", "enum": ["new", "preparing", "ready", "delivered", "cancelled"], "description": "Order status" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" },
+        "estimatedReadyMinutes": { "type": "number", "description": "Estimated ready time in minutes" }
+      },
+      "required": ["orderNumber", "customerName", "customerPhone", "fulfillmentType", "total", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/restaurants/{restaurantId}": {
+      "schema": "RestaurantProfile",
+      "description": "Single restaurant configuration document"
+    },
+    "/menuCategories/{categoryId}": {
+      "schema": "MenuCategory",
+      "description": "Menu categories list"
+    },
+    "/menuItems/{itemId}": {
+      "schema": "MenuItem",
+      "description": "Menu items list"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders collection"
+    }
+  }
+}

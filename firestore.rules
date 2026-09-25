@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Restaurants profile: Readable by everyone, writable by authenticated admin
+    match /restaurants/{restaurantId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Menu categories: Readable by everyone, writable by authenticated admin
+    match /menuCategories/{categoryId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Menu items: Readable by everyone, writable by authenticated admin
+    match /menuItems/{itemId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Orders:
+    // 1. Anyone can create an order (public checkout)
+    // 2. Customers can query/read orders by their phone number (order history query)
+    // 3. Authenticated admin can read all, update status, and manage orders
+    match /orders/{orderId} {
+      allow create: if request.resource.data.customerName is string &&
+                       request.resource.data.customerPhone is string &&
+                       request.resource.data.total is number;
+      allow read: if isAuthenticated() || true;
+      allow update, delete: if isAuthenticated();
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "مخبز رقيش | RGESH Bakery",
+  "description": "منصة طلبات مخبوزات وحلويات رقيش الطازجة مع الربط المباشر مع فايربيس وتأكيد الطلبات عبر واتساب.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
